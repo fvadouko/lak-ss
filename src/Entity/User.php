@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -48,9 +48,17 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom est obligatoire")
-     * @Assert\Length(min=3)
      */
     private $picture;
+
+    /**
+     * @var MediaObject|null
+     *
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
+     * @ORM\JoinColumn(nullable=true)
+     * @ApiProperty(iri="http://localhost:5000/apip/image")
+     */
+    public $image;
 
     /**
      * @ORM\Column(type="datetime")
@@ -118,9 +126,7 @@ class User
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        if (!$createdAt) {
-            $this->createdAt = new \DateTime();
-        }
+        $this->createdAt = $createdAt;
 
         return $this;
     }
