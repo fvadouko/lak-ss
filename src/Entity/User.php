@@ -9,6 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\IsNull;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -48,15 +51,8 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom est obligatoire")
-     * @Assert\Length(min=3)
      */
     private $picture;
-
-    /**
-     * @ORM\Column(type="datetime")
-
-     */
-    private $createdAt;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -67,6 +63,21 @@ class User
      * @ORM\Column(type="integer", nullable=true)
      */
     private $hourlyrate;
+
+    /*
+     * @var MediaObject|null
+     *
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
+     * @ORM\JoinColumn(nullable=true)
+     * @ApiProperty(iri="http://localhost:5000/apip/image")
+     */
+    public $image;
+
+    /**
+     * @ORM\Column(type="datetime")
+
+     */
+    private $createdAt;
 
     public function getId(): ?int
     {
@@ -160,8 +171,5 @@ class User
 
         return $this;
     }
-
-
-
 
 }

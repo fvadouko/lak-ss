@@ -27,7 +27,7 @@ class Event
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("user:read")
      */
     private $location;
@@ -45,13 +45,13 @@ class Event
     private $endt;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      * @Groups("user:read")
      */
     private $allday;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="text", nullable=true)
      * @Groups("user:read")
      */
     private $timezone;
@@ -63,13 +63,7 @@ class Event
     private $repeat;
 
     /**
-     * @ORM\Column(type="text")
-     * @Groups("user:read")
-     */
-    private $employees;
-
-    /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      * @Groups("user:read")
      */
     private $description;
@@ -165,18 +159,6 @@ class Event
     public function setRepeat(string $repeat): self
     {
         $this->repeat = $repeat;
-
-        return $this;
-    }
-
-    public function getEmployees(): ?string
-    {
-        return $this->employees;
-    }
-
-    public function setEmployees(string $employees): self
-    {
-        $this->employees = $employees;
 
         return $this;
     }
