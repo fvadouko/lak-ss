@@ -86,8 +86,7 @@ class AppFixtures extends Fixture
                     ->setLocation($faker->catchPhrase)
                     ->setRepeat($this->getRepeat(mt_rand(0, 4)))
                     ->setAllday(mt_rand(0, 1))
-                    ->setTimezone(mt_rand(0, 1))
-                    ->setEmployees($lastname)
+                  ->setTimezone(mt_rand(0, 1))        
                     ->setStart($start)
                     ->setEndt($end)
                     ->setDescription($faker->paragraphs(1, true))
@@ -98,18 +97,6 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
-    }
-
-    private function getDesignation($i)
-    {
-        $arrayDesignation = ['Commercial', 'Comptable', 'DG', 'RH', 'Informaticien', 'Caissièree'];
-        return $arrayDesignation[$i];
-    }
-
-    private function getRepeat($i)
-    {
-        $arrayRepeat = ['Never', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
-        return $arrayRepeat[$i];
     }
 
     private function getDesignation($i)
