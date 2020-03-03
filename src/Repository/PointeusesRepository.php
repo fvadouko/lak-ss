@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Pointeuses;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Pointeuses|null find($id, $lockMode = null, $lockVersion = null)
@@ -49,17 +49,22 @@ class PointeusesRepository extends ServiceEntityRepository
     }
     */
 
-    // public function paieForAll(EntityManagerInterface $manager)
-    // {
-    //     $conn = $manager->getConnection();
-    //     $sql = '
-    //         SELECT SUM(p.departures - p.arrivals) as volumeHoraire, u.hourlyRate as tauxHoraire, cat.name
-    //         FROM fortune_cookie fc
-    //         INNER JOIN category cat ON cat.id = fc.category_id
-    //         WHERE fc.category_id = :category
-    //         ';
-    // $stmt = $conn->prepare($sql);
-    // $stmt->execute(array('category' => $category->getId()));
-    // return ($stmt->fetchAll());die;
-    // }
+    public function findAllPaies(
+        EntityManagerInterface $manager
+        )
+    {
+        $conn = $manager->getConnection();
+
+        //Format de requete pour Sqlite
+        $sql = "
+        SELECT (user.firstname || ' ' || user.lastname) AS name, user.hourlyrate AS hourlyrate, SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals)) AS  volumehoraire, 
+        (user.hourlyrate * SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals))) as rawsalary 
+        FROM pointeuses AS p 
+        INNER JOIN user 
+        on p.user_id = user.id 
+        GROUP BY name";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return ($stmt->fetchAll());die('Erreur sql');
+    }
 }
