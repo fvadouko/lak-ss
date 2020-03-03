@@ -39,6 +39,26 @@ class Pointeuses
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $year;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $month;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $week;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $overtimes;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +97,54 @@ class Pointeuses
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getMonth(): ?string
+    {
+        return $this->month;
+    }
+
+    public function setMonth(?string $month): self
+    {
+        $this->month = $month;
+
+        return $this;
+    }
+
+    public function getWeek(): ?int
+    {
+        return $this->week;
+    }
+
+    public function setWeek(?int $week): self
+    {
+        $this->week = $week;
+
+        return $this;
+    }
+
+    public function getOvertimes(): ?int
+    {
+        return $this->overtimes;
+    }
+
+    public function setOvertimes(?int $overtimes): self
+    {
+        $this->overtimes = $overtimes;
 
         return $this;
     }
