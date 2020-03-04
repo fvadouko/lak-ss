@@ -19,9 +19,6 @@ class ApiPaieController extends AbstractController
      */
     public function index()
     {
-        return $this->render('api_paie/index.html.twig', [
-            'controller_name' => 'ApiPaieController',
-        ]);
     }
 
 
@@ -30,8 +27,8 @@ class ApiPaieController extends AbstractController
      */
     public function findAll(
         PointeusesRepository $repoPointeuse,
-        EntityManagerInterface $manager)
-    {
+        EntityManagerInterface $manager
+    ) {
         $data = $repoPointeuse->findAllPaies($manager);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
