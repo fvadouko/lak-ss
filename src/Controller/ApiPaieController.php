@@ -22,14 +22,112 @@ class ApiPaieController extends AbstractController
     }
 
 
+    // /**
+    //  * @Route("/api/paie/findAll", name="findAllPaie" ,methods={"GET"})
+    //  */
+    // public function findAll(
+    //     PointeusesRepository $repoPointeuse,
+    //     EntityManagerInterface $manager)
+    // {
+    //     $data = $repoPointeuse->findAllPaies($manager);
+    //     return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    // }
+
+    // /**
+    //  * @Route("/api/paie/findAll", name="findAllPaie" ,methods={"POST"})
+    //  */
+    // public function findAll(
+    //     PointeusesRepository $repoPointeuse,
+    //     Request $request,
+    //     EntityManagerInterface $manager)
+    // {
+    //     $data = \json_decode($request->getContent());
+
+    //     $year = $data->year;
+    //     $month = $data->month;
+
+    //     $data = $repoPointeuse->findAllPaies($manager,$year,$month);
+    //     return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    // }
+
     /**
-     * @Route("/api/paie/findAll", name="findAllPaie" ,methods={"GET"})
+     * @Route("/api/paie/findAll/{year}/{month}", name="findAllPaie" ,methods={"GET"})
      */
     public function findAll(
         PointeusesRepository $repoPointeuse,
+        $year,
+        $month,
         EntityManagerInterface $manager
     ) {
-        $data = $repoPointeuse->findAllPaies($manager);
+
+        $data = $repoPointeuse->findAllPaies($manager, $year, $month);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    }
+
+    // /**
+    //  * @Route("/api/paie/findPaieByUser/{year}/{month}/{id}", name="findPaieByUser" ,methods={"GET"})
+    //  */
+    // public function findPaieByUser(
+    //     PointeusesRepository $repoPointeuse,
+    //     Request $request,
+    //     $year,
+    //     $month,
+    //     $id,
+    //     EntityManagerInterface $manager)
+    // {
+
+    //     $data = $repoPointeuse->findPaieByUser($manager,$year,$month,$id);
+    //     return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    // }
+
+
+    /**
+     * @Route("/api/paie/getWeeksByUser/{year}/{month}/{id}", name="getWeeksByUser" ,methods={"GET"})
+     */
+    public function getWeeksByUser(
+        PointeusesRepository $repoPointeuse,
+        Request $request,
+        $year,
+        $month,
+        $id,
+        EntityManagerInterface $manager
+    ) {
+
+        $data = $repoPointeuse->getWeeksByUser($manager, $year, $month, $id);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    }
+
+
+    /**
+     * @Route("/api/paie/TotalHoursDone/{year}/{month}/{id}", name="TotalHoursDone" ,methods={"GET"})
+     */
+    public function TotalHoursDone(
+        PointeusesRepository $repoPointeuse,
+        Request $request,
+        $year,
+        $month,
+        $id,
+        EntityManagerInterface $manager
+    ) {
+
+        $data = $repoPointeuse->TotalHoursDone($manager, $year, $month, $id);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    }
+
+
+    /**
+     * @Route("/api/paie/TotalPlanningHours/{year}/{month}/{id}", name="TotalPlanningHours" ,methods={"GET"})
+     */
+    public function TotalPlanningHours(
+        PointeusesRepository $repoPointeuse,
+        Request $request,
+        $year,
+        $month,
+        $id,
+        EntityManagerInterface $manager
+    ) {
+
+        $data = $repoPointeuse->TotalPlanningHours($manager, $year, $month, $id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 }
