@@ -53,9 +53,7 @@ class PointeusesRepository extends ServiceEntityRepository
         EntityManagerInterface $manager,
         $year,
         $month
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
 
         //Format de requete pour Sqlite
@@ -67,8 +65,9 @@ class PointeusesRepository extends ServiceEntityRepository
         on p.user_id = user.id and year = :year and month = :month
         GROUP BY name";
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
     }
 
     public function findPaieByUser(
@@ -76,9 +75,7 @@ class PointeusesRepository extends ServiceEntityRepository
         $year,
         $month,
         $id
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
 
         //Format de requete pour Sqlite
@@ -95,10 +92,11 @@ class PointeusesRepository extends ServiceEntityRepository
         INNER JOIN on user.id = event.user_id
         GROUP BY name 
         HAVING user.id = :id";
-        
+
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month, 'id' => $id]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
     }
 
 
@@ -108,9 +106,7 @@ class PointeusesRepository extends ServiceEntityRepository
         $year,
         $month,
         $id
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
 
         //Format de requete pour Sqlite
@@ -119,10 +115,11 @@ class PointeusesRepository extends ServiceEntityRepository
         FROM event
         WHERE year = :year AND month = :month AND event.user_id = :id
         ";
-        
+
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month, 'id' => $id]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
     }
 
 
@@ -132,9 +129,7 @@ class PointeusesRepository extends ServiceEntityRepository
         $year,
         $month,
         $id
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
 
         //Format de requete pour Sqlite
@@ -145,10 +140,11 @@ class PointeusesRepository extends ServiceEntityRepository
         WHERE year = :year AND month = :month AND event.user_id = :id
         GROUP BY week
         ";
-        
+
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month, 'id' => $id]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
     }
 
 
@@ -158,18 +154,28 @@ class PointeusesRepository extends ServiceEntityRepository
         $year,
         $month,
         $id
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
 
         //Format de requete pour Sqlite
         $sql = "
         SELECT SUM(strftime('%H',pointeuses.departures)  - strftime('%H',pointeuses.arrivals)) AS TotalHoursDone,
         pointeuses.week FROM pointeuses WHERE year = :year AND month = :month AND pointeuses.user_id = :id GROUP BY week";
-        
+
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month, 'id' => $id]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
+    }
+
+    public function findOneBySomeField($startTime, $endTime): ?Pointeuses
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.arrivals = :val')
+            ->setParameter('val', $startTime)
+            ->andWhere('p.departures = :val')
+            ->setParameter('val', $endTime)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }
