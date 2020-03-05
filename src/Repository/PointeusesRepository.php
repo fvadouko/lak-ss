@@ -139,7 +139,7 @@ class PointeusesRepository extends ServiceEntityRepository
 
         //Format de requete pour Sqlite
         $sql = "
-        SELECT SUM(strftime('%H',event.endt)  - strftime('%H',event.start)) AS ,
+        SELECT SUM(strftime('%H',event.endt)  - strftime('%H',event.start)) AS TotalPlanningHours,
         week
         FROM event
         WHERE year = :year AND month = :month AND event.user_id = :id
