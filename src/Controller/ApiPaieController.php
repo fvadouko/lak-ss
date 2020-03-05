@@ -117,4 +117,21 @@ class ApiPaieController extends AbstractController
         $data = $repoPointeuse->TotalHoursDone($manager,$year,$month,$id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
+
+    
+    /**
+     * @Route("/api/paie/TotalPlanningHours/{year}/{month}/{id}", name="TotalPlanningHours" ,methods={"GET"})
+     */
+    public function TotalPlanningHours(
+        PointeusesRepository $repoPointeuse,
+        Request $request,
+        $year,
+        $month,
+        $id,
+        EntityManagerInterface $manager)
+    {
+
+        $data = $repoPointeuse->TotalPlanningHours($manager,$year,$month,$id);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    }
 }

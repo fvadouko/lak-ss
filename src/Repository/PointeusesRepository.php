@@ -115,7 +115,7 @@ class PointeusesRepository extends ServiceEntityRepository
 
         //Format de requete pour Sqlite
         $sql = "
-        SELECT week
+        SELECT DISTINCT week
         FROM event
         WHERE year = :year AND month = :month AND event.user_id = :id
         ";
