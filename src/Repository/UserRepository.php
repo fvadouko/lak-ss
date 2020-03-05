@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +49,26 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // // Recupere un utilisateur
+    // public function find(
+    //     EntityManagerInterface $manager,
+    //     $id
+    // )
+
+    // {
+    //     $conn = $manager->getConnection();
+
+    //     //Format de requete pour Sqlite
+    //     $sql = "
+    //     SELECT *
+    //     FROM user
+    //     WHERE user.id = :id
+    //     ";
+        
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->execute(['id'=>$id]);
+    //     return ($stmt->fetchAll());die('Erreur sql');
+    // }
+
 }

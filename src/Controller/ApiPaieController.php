@@ -58,7 +58,6 @@ class ApiPaieController extends AbstractController
      */
     public function findAll(
         PointeusesRepository $repoPointeuse,
-        Request $request,
         $year,
         $month,
         EntityManagerInterface $manager)
@@ -132,6 +131,22 @@ class ApiPaieController extends AbstractController
     {
 
         $data = $repoPointeuse->TotalPlanningHours($manager,$year,$month,$id);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    }
+
+    /**
+     * @Route("/api/paie/getOvertimes/{year}/{month}/{id}", name="getOvertimes" ,methods={"GET"})
+     */
+    public function getOvertimes(
+        PointeusesRepository $repoPointeuse,
+        Request $request,
+        $year,
+        $month,
+        $id,
+        EntityManagerInterface $manager)
+    {
+
+        $data = $repoPointeuse->getOvertimes($manager,$year,$month,$id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 }
