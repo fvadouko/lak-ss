@@ -207,5 +207,38 @@ class PointeusesRepository extends ServiceEntityRepository
             return ($stmt->fetchAll());die('Erreur sql');
         }
 
+        // Editiondu detail de la paie
+        public function getPaieDetail(
+            EntityManagerInterface $manager,
+            $year,
+            $month,
+            $id,
+            $week
+        )
+    
+        {
+            $conn = $manager->getConnection();
+    
+            //Format de requete pour Sqlite strftime('%w',event.start) as jour
+            $sql = "
+            SELECT 
+            strftime('%w',event.start) as jour,
+            event.title,
+            event.id,
+            event.start as debutEvent,
+            event.endt as finEvent,
+            event.user_id as user
+            FROM event
+            WHERE
+            event.year = :year AND
+            event.month = :month AND
+            event.user_id = :id AND
+            event.week = :week
+            ";
+            
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id,'week'=>$week]);
+            return ($stmt->fetchAll());die('Erreur sql');
+        }
 
 }

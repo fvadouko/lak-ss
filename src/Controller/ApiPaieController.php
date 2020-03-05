@@ -149,4 +149,22 @@ class ApiPaieController extends AbstractController
         $data = $repoPointeuse->getOvertimes($manager,$year,$month,$id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
+
+    /**
+     * @Route("/api/paie/getPaieDetail/{year}/{month}/{id}/{week}", name="getPaieDetail" ,methods={"GET"})
+     */
+    public function getPaieDetail(
+        PointeusesRepository $repoPointeuse,
+        Request $request,
+        $year,
+        $month,
+        $id,
+        $week,
+        EntityManagerInterface $manager)
+    {
+
+        $data = $repoPointeuse->getPaieDetail($manager,$year,$month,$id,$week);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    }
+
 }
