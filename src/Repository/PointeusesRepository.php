@@ -49,6 +49,41 @@ class PointeusesRepository extends ServiceEntityRepository
     }
     */
 
+    // public function findPaieByUser(
+    //     EntityManagerInterface $manager,
+    //     $year,
+    //     $month,
+    //     $id
+    // )
+
+    // {
+    //     $conn = $manager->getConnection();
+
+    //     //Format de requete pour Sqlite
+    //     $sql = "
+    //     SELECT 
+    //         (user.firstname || ' ' || user.lastname) AS name, 
+    //         user.hourlyrate AS hourlyrate, 
+    //         SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals)) AS  volumehoraire, 
+    //         user.id AS user,
+    //         p.week AS week,
+    //         p.year AS year,
+    //         p.month as month
+    //         (user.hourlyrate * SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals))) as rawsalary 
+    //     FROM pointeuses AS p 
+    //     INNER JOIN user 
+    //         on p.user_id = user.id and year = :year and 
+    //         month = :month
+    //     INNER JOIN on user.id = event.user_id
+    //     GROUP BY name 
+    //     HAVING user.id = :id";
+        
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
+    //     return ($stmt->fetchAll());die('Erreur sql');
+    // }
+
+
     public function findAllPaies(
         EntityManagerInterface $manager,
         $year,
@@ -60,53 +95,22 @@ class PointeusesRepository extends ServiceEntityRepository
 
         //Format de requete pour Sqlite
         $sql = "
-        SELECT (user.firstname || ' ' || user.lastname) AS name, user.hourlyrate AS hourlyrate, SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals)) AS  volumehoraire, 
-        (user.hourlyrate * SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals))) as rawsalary,
-        user.id AS user,
-        p.week AS week,
-        p.year AS year,
-        p.month as month 
+        SELECT 
+            (user.firstname || ' ' || user.lastname) AS name, 
+            user.hourlyrate AS hourlyrate, SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals)) AS volumehoraire, 
+            (user.hourlyrate * SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals))) as rawsalary,
+            user.id AS user,
+            p.week AS week,
+            p.year AS year,
+            p.month as month 
         FROM pointeuses AS p 
         INNER JOIN user 
-        on p.user_id = user.id and year = :year and month = :month
+            on p.user_id = user.id and year = :year and month = :month
         GROUP BY name";
         $stmt = $conn->prepare($sql);
         $stmt->execute(['year'=>$year,'month'=>$month]);
         return ($stmt->fetchAll());die('Erreur sql');
     }
-
-    public function findPaieByUser(
-        EntityManagerInterface $manager,
-        $year,
-        $month,
-        $id
-    )
-
-    {
-        $conn = $manager->getConnection();
-
-        //Format de requete pour Sqlite
-        $sql = "
-        SELECT (user.firstname || ' ' || user.lastname) AS name, 
-        user.hourlyrate AS hourlyrate, 
-        SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals)) AS  volumehoraire, 
-        user.id AS user,
-        p.week AS week,
-        p.year AS year,
-        p.month as month
-        (user.hourlyrate * SUM(strftime('%H',p.departures) - strftime('%H',p.arrivals))) as rawsalary 
-        FROM pointeuses AS p 
-        INNER JOIN user 
-        on p.user_id = user.id and year = :year and month = :month
-        INNER JOIN on user.id = event.user_id
-        GROUP BY name 
-        HAVING user.id = :id";
-        
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
-    }
-
 
     // Recupere la liste des semaines du mois selectionné
     public function getWeeksByUser(
@@ -121,11 +125,14 @@ class PointeusesRepository extends ServiceEntityRepository
 
         //Format de requete pour Sqlite
         $sql = "
-        SELECT DISTINCT week,
-        year,
-        month
+        SELECT 
+            DISTINCT week,
+            year,
+            month
         FROM event
-        WHERE year = :year AND month = :month AND event.user_id = :id
+        WHERE 
+            year = :year AND month = :month AND 
+            event.user_id = :id
         ";
         
         $stmt = $conn->prepare($sql);
@@ -147,10 +154,13 @@ class PointeusesRepository extends ServiceEntityRepository
 
         //Format de requete pour Sqlite
         $sql = "
-        SELECT SUM(strftime('%H',event.endt)  - strftime('%H',event.start)) AS TotalPlanningHours,
-        week
+        SELECT 
+            SUM(strftime('%H',event.endt)  - strftime('%H',event.start)) AS TotalPlanningHours,
+            week
         FROM event
-        WHERE year = :year AND month = :month AND event.user_id = :id
+        WHERE 
+            year = :year AND month = :month AND 
+            event.user_id = :id
         GROUP BY week
         ";
         
@@ -173,8 +183,14 @@ class PointeusesRepository extends ServiceEntityRepository
 
         //Format de requete pour Sqlite
         $sql = "
-        SELECT SUM(strftime('%H',pointeuses.departures)  - strftime('%H',pointeuses.arrivals)) AS TotalHoursDone,
-        pointeuses.week FROM pointeuses WHERE year = :year AND month = :month AND pointeuses.user_id = :id GROUP BY week";
+        SELECT 
+            SUM(strftime('%H',pointeuses.departures)  - strftime('%H',pointeuses.arrivals)) AS TotalHoursDone,
+            pointeuses.week 
+        FROM 
+            pointeuses WHERE year = :year AND 
+            month = :month AND 
+            pointeuses.user_id = :id 
+        GROUP BY week";
         
         $stmt = $conn->prepare($sql);
         $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
@@ -195,10 +211,14 @@ class PointeusesRepository extends ServiceEntityRepository
     
             //Format de requete pour Sqlite
             $sql = "
-            SELECT SUM(pointeuses.overtimes) AS overtimes,
-            pointeuses.week AS week
+            SELECT 
+                SUM(pointeuses.overtimes) AS overtimes,
+                pointeuses.week AS week
             FROM pointeuses
-            WHERE pointeuses.year = :year AND pointeuses.month = :month AND pointeuses.user_id = :id
+            WHERE 
+                pointeuses.year = :year AND 
+                pointeuses.month = :month AND 
+                pointeuses.user_id = :id
             GROUP BY week
             ";
             
@@ -207,13 +227,13 @@ class PointeusesRepository extends ServiceEntityRepository
             return ($stmt->fetchAll());die('Erreur sql');
         }
 
-        // Editiondu detail de la paie
-        public function getPaieDetail(
+        // Renvoie la liste des events (le numero du jour, la semaine,...) par User 
+        //en fonction de year, month id du User
+        public function getEventsByUser(
             EntityManagerInterface $manager,
             $year,
             $month,
-            $id,
-            $week
+            $id
         )
     
         {
@@ -222,22 +242,54 @@ class PointeusesRepository extends ServiceEntityRepository
             //Format de requete pour Sqlite strftime('%w',event.start) as jour
             $sql = "
             SELECT 
-            strftime('%w',event.start) as jour,
-            event.title,
-            event.id,
-            event.start as debutEvent,
-            event.endt as finEvent,
-            event.user_id as user
+                event.week as week,
+                strftime('%w',event.start) as jour,
+                event.title,
+                event.id AS eventID,
+                event.start as debutPrevu,
+                event.endt as finPrevu,
+                event.user_id as user
             FROM event
             WHERE
-            event.year = :year AND
-            event.month = :month AND
-            event.user_id = :id AND
-            event.week = :week
-            ";
+                event.year = :year AND
+                event.month = :month AND
+                event.user_id = :id
+                ";
             
             $stmt = $conn->prepare($sql);
-            $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id,'week'=>$week]);
+            $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
+            return ($stmt->fetchAll());die('Erreur sql');
+        }
+
+        // Renvoie la liste des pointeuses () par User en fonction de year, month id du User
+        public function getPointeusesByUser(
+            EntityManagerInterface $manager,
+            $year,
+            $month,
+            $id
+        )
+    
+        {
+            $conn = $manager->getConnection();
+    
+            //Format de requete pour Sqlite strftime('%w',event.start) as jour
+            $sql = "
+            SELECT 
+                pointeuses.week as week,
+                strftime('%w',pointeuses.arrivals) as jour,
+                pointeuses.id AS pointeusesID,
+                pointeuses.arrivals as debutReel,
+                pointeuses.departures as finPrevu,
+                pointeuses.user_id as user
+            FROM pointeuses
+            WHERE
+                pointeuses.year = :year AND
+                pointeuses.month = :month AND
+                pointeuses.user_id = :id
+                ";
+            
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
             return ($stmt->fetchAll());die('Erreur sql');
         }
 

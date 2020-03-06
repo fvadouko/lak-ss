@@ -151,20 +151,34 @@ class ApiPaieController extends AbstractController
     }
 
     /**
-     * @Route("/api/paie/getPaieDetail/{year}/{month}/{id}/{week}", name="getPaieDetail" ,methods={"GET"})
+     * @Route("/api/paie/getEventsByUser/{year}/{month}/{id}", name="getEventsByUser" ,methods={"GET"})
      */
-    public function getPaieDetail(
+    public function getEventsByUser(
         PointeusesRepository $repoPointeuse,
         Request $request,
         $year,
         $month,
         $id,
-        $week,
         EntityManagerInterface $manager)
     {
 
-        $data = $repoPointeuse->getPaieDetail($manager,$year,$month,$id,$week);
+        $data = $repoPointeuse->getEventsByUser($manager,$year,$month,$id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
+    /**
+     * @Route("/api/paie/getPointeusesByUser/{year}/{month}/{id}", name="getPointeusesByUser" ,methods={"GET"})
+     */
+    public function getPointeusesByUser(
+        PointeusesRepository $repoPointeuse,
+        Request $request,
+        $year,
+        $month,
+        $id,
+        EntityManagerInterface $manager)
+    {
+
+        $data = $repoPointeuse->getPointeusesByUser($manager,$year,$month,$id);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    }
 }
