@@ -37,13 +37,15 @@ class EventRepository extends ServiceEntityRepository
     */
 
 
-    public function findOneBySomeField($startTime, $endTime): ?Event
+    public function findOneBySomeField($startTime, $endTime, $idUser): ?Event
     {
         return $this->createQueryBuilder('e')
             ->andWhere('e.start = :val')
             ->setParameter('val', $startTime)
             ->andWhere('e.endt = :val')
             ->setParameter('val', $endTime)
+            ->andWhere('e.user = :val')
+            ->setParameter('val', $idUser)
             ->getQuery()
             ->getOneOrNullResult();
     }

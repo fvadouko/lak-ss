@@ -168,13 +168,15 @@ class PointeusesRepository extends ServiceEntityRepository
         die('Erreur sql');
     }
 
-    public function findOneBySomeField($startTime, $endTime): ?Pointeuses
+    public function findOneBySomeField($startTime, $endTime, $idUser): ?Pointeuses
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.arrivals = :val')
             ->setParameter('val', $startTime)
             ->andWhere('p.departures = :val')
             ->setParameter('val', $endTime)
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $idUser)
             ->getQuery()
             ->getOneOrNullResult();
     }
