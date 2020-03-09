@@ -106,7 +106,6 @@ class ApiPaieController extends AbstractController
      */
     public function TotalHoursDone(
         PointeusesRepository $repoPointeuse,
-        Request $request,
         $year,
         $month,
         $id,
@@ -116,7 +115,23 @@ class ApiPaieController extends AbstractController
         $data = $repoPointeuse->TotalHoursDone($manager,$year,$month,$id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
+    /**
+     * @Route("/api/paie/TotalHoursDones/{year}/{month}/{id}", name="TotalHoursDones" ,methods={"GET"})
+     */
+    public function TotalHoursDones(
+        PointeusesRepository $repoPointeuse,
+        $year,
+        $month,
+        $id,
+        EntityManagerInterface $manager)
+    {
 
+        $data = $repoPointeuse->TotalHoursDones($manager,$year,$month,$id);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+
+
+
+    }
     
     /**
      * @Route("/api/paie/TotalPlanningHours/{year}/{month}/{id}", name="TotalPlanningHours" ,methods={"GET"})
