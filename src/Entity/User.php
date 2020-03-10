@@ -49,8 +49,7 @@ class User
     private $designation;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Le nom est obligatoire")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $picture;
 
@@ -139,8 +138,8 @@ class User
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
- 
-            $this->createdAt = new \DateTime();
+
+        $this->createdAt = new \DateTime();
 
 
         return $this;
@@ -171,5 +170,4 @@ class User
 
         return $this;
     }
-
 }

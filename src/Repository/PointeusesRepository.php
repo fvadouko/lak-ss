@@ -53,9 +53,7 @@ class PointeusesRepository extends ServiceEntityRepository
         EntityManagerInterface $manager,
         $year,
         $month
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
         $sql = "
         SELECT 
@@ -75,8 +73,9 @@ class PointeusesRepository extends ServiceEntityRepository
         GROUP BY name";
 
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -86,9 +85,7 @@ class PointeusesRepository extends ServiceEntityRepository
         $year,
         $month,
         $id
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
         $sql = "
         SELECT 
@@ -102,8 +99,9 @@ class PointeusesRepository extends ServiceEntityRepository
             event.user_id = :id";
         
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month, 'id' => $id]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
     }
 
 
@@ -114,9 +112,7 @@ class PointeusesRepository extends ServiceEntityRepository
         $year,
         $month,
         $id
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
         $sql = "
         SELECT 
@@ -130,8 +126,9 @@ class PointeusesRepository extends ServiceEntityRepository
         GROUP BY week";
         
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month, 'id' => $id]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
     }
 
 
@@ -142,9 +139,7 @@ class PointeusesRepository extends ServiceEntityRepository
         $year,
         $month,
         $id
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
         $sql = "
         SELECT 
@@ -186,8 +181,9 @@ class PointeusesRepository extends ServiceEntityRepository
             pointeuses.user_id = :id";
         
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month, 'id' => $id]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
     }
 
 
@@ -198,9 +194,7 @@ class PointeusesRepository extends ServiceEntityRepository
         $year,
         $month,
         $id
-    )
-
-    {
+    ) {
         $conn = $manager->getConnection();
         $sql = "
         SELECT 
@@ -214,8 +208,22 @@ class PointeusesRepository extends ServiceEntityRepository
         GROUP BY week";
         
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['year'=>$year,'month'=>$month,'id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        $stmt->execute(['year' => $year, 'month' => $month, 'id' => $id]);
+        return ($stmt->fetchAll());
+        die('Erreur sql');
+    }
+
+    public function findOneBySomeField($startTime, $endTime, $idUser): ?Pointeuses
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.arrivals = :val')
+            ->setParameter('val', $startTime)
+            ->andWhere('p.departures = :val')
+            ->setParameter('val', $endTime)
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $idUser)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 

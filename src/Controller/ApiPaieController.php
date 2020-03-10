@@ -19,9 +19,6 @@ class ApiPaieController extends AbstractController
      */
     public function index()
     {
-        return $this->render('api_paie/index.html.twig', [
-            'controller_name' => 'ApiPaieController',
-        ]);
     }
 
 
@@ -32,10 +29,10 @@ class ApiPaieController extends AbstractController
         PointeusesRepository $repoPointeuse,
         $year,
         $month,
-        EntityManagerInterface $manager)
-    {
+        EntityManagerInterface $manager
+    ) {
 
-        $data = $repoPointeuse->findAllPaies($manager,$year,$month);
+        $data = $repoPointeuse->findAllPaies($manager, $year, $month);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
@@ -48,10 +45,10 @@ class ApiPaieController extends AbstractController
         $year,
         $month,
         $id,
-        EntityManagerInterface $manager)
-    {
+        EntityManagerInterface $manager
+    ) {
 
-        $data = $repoPointeuse->getWeeksByUser($manager,$year,$month,$id);
+        $data = $repoPointeuse->getWeeksByUser($manager, $year, $month, $id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
@@ -64,10 +61,10 @@ class ApiPaieController extends AbstractController
         $year,
         $month,
         $id,
-        EntityManagerInterface $manager)
-    {
+        EntityManagerInterface $manager
+    ) {
 
-        $data = $repoPointeuse->TotalHoursDone($manager,$year,$month,$id);
+        $data = $repoPointeuse->TotalHoursDone($manager, $year, $month, $id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
@@ -96,10 +93,10 @@ class ApiPaieController extends AbstractController
         $year,
         $month,
         $id,
-        EntityManagerInterface $manager)
-    {
+        EntityManagerInterface $manager
+    ) {
 
-        $data = $repoPointeuse->TotalPlanningHours($manager,$year,$month,$id);
+        $data = $repoPointeuse->TotalPlanningHours($manager, $year, $month, $id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
@@ -151,7 +148,7 @@ class ApiPaieController extends AbstractController
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
-    
+
     /**
      * @Route("/api/paie/getPointeusesByUser/{year}/{month}/{id}", name="getPointeusesByUser" ,methods={"GET"})
      */
