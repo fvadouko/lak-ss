@@ -25,34 +25,6 @@ class ApiPaieController extends AbstractController
     }
 
 
-    // /**
-    //  * @Route("/api/paie/findAll", name="findAllPaie" ,methods={"GET"})
-    //  */
-    // public function findAll(
-    //     PointeusesRepository $repoPointeuse,
-    //     EntityManagerInterface $manager)
-    // {
-    //     $data = $repoPointeuse->findAllPaies($manager);
-    //     return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
-    // }
-
-    // /**
-    //  * @Route("/api/paie/findAll", name="findAllPaie" ,methods={"POST"})
-    //  */
-    // public function findAll(
-    //     PointeusesRepository $repoPointeuse,
-    //     Request $request,
-    //     EntityManagerInterface $manager)
-    // {
-    //     $data = \json_decode($request->getContent());
-
-    //     $year = $data->year;
-    //     $month = $data->month;
-
-    //     $data = $repoPointeuse->findAllPaies($manager,$year,$month);
-    //     return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
-    // }
-
     /**
      * @Route("/api/paie/findAll/{year}/{month}", name="findAllPaie" ,methods={"GET"})
      */
@@ -67,29 +39,12 @@ class ApiPaieController extends AbstractController
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
-    // /**
-    //  * @Route("/api/paie/findPaieByUser/{year}/{month}/{id}", name="findPaieByUser" ,methods={"GET"})
-    //  */
-    // public function findPaieByUser(
-    //     PointeusesRepository $repoPointeuse,
-    //     Request $request,
-    //     $year,
-    //     $month,
-    //     $id,
-    //     EntityManagerInterface $manager)
-    // {
-
-    //     $data = $repoPointeuse->findPaieByUser($manager,$year,$month,$id);
-    //     return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
-    // }
-
 
     /**
      * @Route("/api/paie/getWeeksByUser/{year}/{month}/{id}", name="getWeeksByUser" ,methods={"GET"})
      */
     public function getWeeksByUser(
         PointeusesRepository $repoPointeuse,
-        Request $request,
         $year,
         $month,
         $id,
@@ -115,6 +70,8 @@ class ApiPaieController extends AbstractController
         $data = $repoPointeuse->TotalHoursDone($manager,$year,$month,$id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
+
+
     /**
      * @Route("/api/paie/TotalHoursDones/{year}/{month}/{id}", name="TotalHoursDones" ,methods={"GET"})
      */
@@ -128,17 +85,14 @@ class ApiPaieController extends AbstractController
 
         $data = $repoPointeuse->TotalHoursDones($manager,$year,$month,$id);
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
-
-
-
     }
     
+
     /**
      * @Route("/api/paie/TotalPlanningHours/{year}/{month}/{id}", name="TotalPlanningHours" ,methods={"GET"})
      */
     public function TotalPlanningHours(
         PointeusesRepository $repoPointeuse,
-        Request $request,
         $year,
         $month,
         $id,
@@ -149,12 +103,12 @@ class ApiPaieController extends AbstractController
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
+
     /**
      * @Route("/api/paie/getOvertimes/{year}/{month}/{id}", name="getOvertimes" ,methods={"GET"})
      */
     public function getOvertimes(
         PointeusesRepository $repoPointeuse,
-        Request $request,
         $year,
         $month,
         $id,
@@ -165,12 +119,28 @@ class ApiPaieController extends AbstractController
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
+
+    /**
+     * @Route("/api/paie/weeksPlanned/{year}/{month}/{id}", name="weeksPlanned" ,methods={"GET"})
+     */
+    public function weeksPlanned(
+        PointeusesRepository $repoPointeuse,
+        $year,
+        $month,
+        $id,
+        EntityManagerInterface $manager)
+    {
+
+        $data = $repoPointeuse->weeksPlanned($manager,$year,$month,$id);
+        return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
+    }
+
+
     /**
      * @Route("/api/paie/getEventsByUser/{year}/{month}/{id}", name="getEventsByUser" ,methods={"GET"})
      */
     public function getEventsByUser(
         PointeusesRepository $repoPointeuse,
-        Request $request,
         $year,
         $month,
         $id,
@@ -181,12 +151,12 @@ class ApiPaieController extends AbstractController
         return new Response(json_encode($data), 200, array('Content-Type' => 'application/json'));
     }
 
+    
     /**
      * @Route("/api/paie/getPointeusesByUser/{year}/{month}/{id}", name="getPointeusesByUser" ,methods={"GET"})
      */
     public function getPointeusesByUser(
         PointeusesRepository $repoPointeuse,
-        Request $request,
         $year,
         $month,
         $id,
