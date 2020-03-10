@@ -6,6 +6,7 @@ use App\Entity\Pointeuses;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @method Pointeuses|null find($id, $lockMode = null, $lockVersion = null)
@@ -326,5 +327,33 @@ class PointeusesRepository extends ServiceEntityRepository
         return ($stmt->fetchAll());die('Erreur sql');
     }
     
+
+    /////////////////////////////////////////////////////////////////////////
+    // Renvoie la liste des semaines par  () 
+    public function lastPointeuse(
+        EntityManagerInterface $manager,
+        $id
+    )
+
+    {
+        $conn = $manager->getConnection();
+        $sql = "
+        SELECT 
+            pointeuses.week as week,
+            pointeuses.arrivals as arrivals,
+            pointeuses.departures as departures,
+            pointeuses.id AS pointeusesID,
+            pointeuses.user_id as user
+        FROM pointeuses
+        WHERE
+            pointeuses.user_id = :id
+        ORDER BY pointeuses.id DESC 
+        LIMIT 0, 1";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id'=>$id]);
+        return ($stmt->fetchAll());die('Erreur sql');
+    }
+
 
 }

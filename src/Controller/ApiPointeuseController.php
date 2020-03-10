@@ -92,4 +92,31 @@ class ApiPointeuseController extends AbstractController
         return new Response(json_encode("success"), 200, array('Content-Type' => 'application/json'));
 
     }  
+
+
+        /**
+     * @Route("/api/lastPointeuse", name="lastPointeuse" ,methods={"POST"})
+        */
+        public function lastPointeuse(
+            UserRepository $repoUser,
+            PointeusesRepository $repoPointeuse,
+            EntityManagerInterface $manager,
+            Request $request
+        )
+
+        {
+    
+            $data = \json_decode($request->getContent());
+     
+            // $options = ['cost' => 10,];
+            // $this->passwords = password_hash($passwords, PASSWORD_DEFAULT,$options);
+            $passwords = $data->passwords;
+            
+            $user = $repoUser->findOneBy(['passwords' => $passwords]);
+    
+            $pointeuse = $repoPointeuse->lastPointeuse($manager,$user->getId());
+    
+            return new Response(json_encode($pointeuse), 200, array('Content-Type' => 'application/json'));
+    
+        } 
 }
