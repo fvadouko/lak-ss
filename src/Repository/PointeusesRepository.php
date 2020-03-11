@@ -352,7 +352,7 @@ class PointeusesRepository extends ServiceEntityRepository
         
         $stmt = $conn->prepare($sql);
         $stmt->execute(['id'=>$id]);
-        return ($stmt->fetchAll());die('Erreur sql');
+        return ($stmt->fetch());die('Erreur sql');
     }
 
 

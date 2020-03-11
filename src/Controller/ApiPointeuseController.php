@@ -64,7 +64,7 @@ class ApiPointeuseController extends AbstractController
 
     /**
      * @Route("/api/edit/pointeuses", name="addDepartures" ,methods={"POST"})
-        */
+    */
     public function update(
         UserRepository $repoUser,
         PointeusesRepository $repoPointeuse,
@@ -95,25 +95,25 @@ class ApiPointeuseController extends AbstractController
 
 
         /**
-     * @Route("/api/lastPointeuse", name="lastPointeuse" ,methods={"POST"})
+        * @Route("/api/lastPointeuse/{password}", name="lastPointeuse" ,methods={"GET"})
         */
         public function lastPointeuse(
             UserRepository $repoUser,
             PointeusesRepository $repoPointeuse,
-            EntityManagerInterface $manager,
-            Request $request
+            $password,
+            EntityManagerInterface $manager
         )
 
         {
     
-            $data = \json_decode($request->getContent());
+            // $data = \json_decode($request->getContent());
      
             // $options = ['cost' => 10,];
             // $this->passwords = password_hash($passwords, PASSWORD_DEFAULT,$options);
-            $passwords = $data->passwords;
+            //$passwords = $data->passwords;
             
-            $user = $repoUser->findOneBy(['passwords' => $passwords]);
-    
+            $user = $repoUser->findOneBy(['passwords' => $password]);
+            //$id = 131;
             $pointeuse = $repoPointeuse->lastPointeuse($manager,$user->getId());
     
             return new Response(json_encode($pointeuse), 200, array('Content-Type' => 'application/json'));
