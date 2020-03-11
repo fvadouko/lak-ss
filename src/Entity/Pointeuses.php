@@ -41,21 +41,25 @@ class Pointeuses
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("user:read")
      */
     private $year;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups("user:read")
      */
     private $month;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("user:read")
      */
     private $week;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("user:read")
      */
     private $overtimes;
 
