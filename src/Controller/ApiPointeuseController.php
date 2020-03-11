@@ -85,7 +85,10 @@ class ApiPointeuseController extends AbstractController
         $pointeuse = $repoPointeuse->findOneBy(['user' => $user],['id'=>'DESC']);
 
         $pointeuse->setUser($user)
-                ->setDepartures(new DateTime($data->departures));
+                ->setDepartures(new DateTime($data->departures))
+                ->setWeek($data->week)
+                ->setYear($data->year)
+                ->setMonth($data->month);
         $manager->persist($pointeuse);
         $manager->flush();
 
