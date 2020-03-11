@@ -88,7 +88,8 @@ class ApiPointeuseController extends AbstractController
                 ->setDepartures(new DateTime($data->departures))
                 ->setWeek($data->week)
                 ->setYear($data->year)
-                ->setMonth($data->month);
+                ->setMonth($data->month)
+                ->setOvertimes(0);
         $manager->persist($pointeuse);
         $manager->flush();
 
